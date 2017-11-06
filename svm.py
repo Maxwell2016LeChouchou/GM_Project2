@@ -1,12 +1,16 @@
+#Copy Right @Maxwell Jianzhou Wang
+#ELG5131 Graphical Models Project 2
+#Main Phase --- Support Vector Machine for both Trainer and Predictor
+
 import numpy as np
 import numpy.linalg as la
 import cvxopt.solvers
 
 MIN_SUPPORT_VECTOR_MULTIPLIER = 1e-5
 
-class SVMTrainer(object):
+class SVM_Trainer(object):
     def __init__(self, k, c):
-        self._k = k
+        self._k = k #kernel functions
         self._c = c
 
     def trainer(self, x, y):
@@ -71,5 +75,38 @@ class SVMTrainer(object):
 
         return np.ravel(solution['x'])
 
-class SVMPredictor(object)
-#你们写一下predictor
+class SVM_Predictor(object):
+    def __init__(self, k, bias, weights, support_vectors, support_vector_signs):
+        self.k = k
+        self.bias = bias
+        self.weights = weights
+        self.support_vectors = support_vectors
+        self.support_vectors_signs = support_vector_signs
+
+    def predict (self, x):
+        result = self._bias
+        for x_i, y_i, z_i in zip( self.weight, self.support_vectors, self.support_vectors):
+            result += z_i * y_i * self._kernel(x_i, x)
+        return np.sign(result)
+
+class Kernel(object):
+    def linear(self):
+        return lambda x, y: np.dot(x,y)
+    def rbf(gamma):
+        return lambda x, y: np.exp(-gamma*la.norm(np.substract(x,y)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
