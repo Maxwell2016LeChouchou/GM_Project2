@@ -27,3 +27,9 @@ logclassify:logistic classifier algorithm
 
 
 splitData is to slip input data into training data and test data in 4:1 ratio
+
+
+
+
+
+we also need a output algorithm to compare these three algorithm!
