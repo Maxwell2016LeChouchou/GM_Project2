@@ -8,15 +8,13 @@ n_one=size(class_1,2);
 n_zero=size(class_2,2);
 [nFeatures,nSamples]=size(inputx);
 inputy=[ones(1,n_one),zeros(1,n_zero)];
-% split data into test samples and training samples
 [x xTest y yTest] = splitData(inputx', inputy');
-clear inputx, inputy;
 
-%initialize variables 
-weight=ones(nFeatures,1);
+
+weight=zeros(nFeatures,1);
 bias=1;
 nIter=10000;
-alpha=0.001;
+alpha=0.0001;
 threthold=0.05;
 
 %% training process
@@ -24,27 +22,29 @@ for i=1:nIter
 %% forward propagation
 h = weight'*x+bias;        
 % linear transform
-g= 1.0 ./ (1.0 + exp(-h)); 
+hypothesis= 1.0 ./ (1.0 + exp(-h)); 
 % activation function
-error=[y(:,find(y==1)).*log(g(:,find(y==1))),(1-y(:,find(y==0))).*log(1-g(:,find(y==0)))];
-J=(-1/nSamples)*sum(error);
+J=(-1/nSamples)*sum(y.*log(hypothesis)+(1-y).*log(1-hypothesis));
 % loss function
 if J<threthold
     break
 end
 %% backward propagation
-deltah=g-y;
+deltah=hypothesis-y;
 % partial derivative
-weight=weight-alpha*x*deltah';
+deltaw=(1/nSamples)*x*deltah';
+deltab=(1/nSamples)*sum(deltah);
+weight=weight-alpha*deltaw;
 % update weight
-bias=bias-alpha*sum(deltah);
+bias=bias-alpha*deltab;
 % update bias
 end
 
 %% classifier process
-
-
-
+hTest = weight'*xTest+bias; 
+gTest= 1.0 ./ (1.0 + exp(-hTest)); 
+p =double( (gTest >= 0.5));
+size(find(yTest-p==0),2)/400;
 
 
 
